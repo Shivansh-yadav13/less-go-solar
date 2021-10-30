@@ -11,6 +11,7 @@ function Input() {
     const [userPosition, setUserPosition] = useState();
 
     console.log(userPosition)
+    console.log(solarData)
 
     const [draggable, setDraggable] = useState(false);
     const markerRef = useRef(null);
@@ -40,22 +41,21 @@ function Input() {
                 const getData = async () => {
                     const solarData = await fetch(`https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=EcHIlOB7hmPSAsR0kKtIimdO69cGeBxzAdXRtuTl&lat=${userPosition ? userPosition.lat : position.coords.latitude}&lon=${userPosition ? userPosition.lng : position.coords.longitude}`)
                     const parsedSolarData = await solarData.json()
-                    console.log(parsedSolarData)
                     setSolarData(parsedSolarData)
                 }
                 getData();
-        }, (error) => {
-            console.log(error)
-        });
-    } else {
-        const getData = async () => {
-            const solarData = await fetch(`https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=EcHIlOB7hmPSAsR0kKtIimdO69cGeBxzAdXRtuTl&lat=${userPosition.lat }&lon=${userPosition.lng}`)
-            const parsedSolarData = await solarData.json()
-            console.log(parsedSolarData)
-            setSolarData(parsedSolarData)
+            }, (error) => {
+                console.log(error)
+            });
+        } else {
+            const getData = async () => {
+                const solarData = await fetch(`https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=EcHIlOB7hmPSAsR0kKtIimdO69cGeBxzAdXRtuTl&lat=${userPosition.lat}&lon=${userPosition.lng}`)
+                const parsedSolarData = await solarData.json()
+                console.log(parsedSolarData)
+                setSolarData(parsedSolarData)
+            }
+            getData();
         }
-        getData();
-    }
 
     }, [userPosition])
 
@@ -68,7 +68,7 @@ function Input() {
                 {/* <!-- <span className="input-group-text">$</span> --> */}
                 <input type="text" min="0" max="100" step="any" className="form-control" maxLength="3" size="4" />
                 <span className="input-group-text">.00</span>
-                <select className="form-select" aria-label="Default select example" id="currency" onChange={(e) => {setUserCurrency(e.target.value)}} defaultValue={userCurrency}>
+                <select className="form-select" aria-label="Default select example" id="currency" onChange={(e) => { setUserCurrency(e.target.value) }} defaultValue={userCurrency}>
                     <option value="USD">United States Dollars</option>
                     <option value="EUR">Euro</option>
                     <option value="GBP">United Kingdom Pounds</option>
@@ -150,7 +150,7 @@ function Input() {
                 </span>
                 {/* <span className="input-group-text">$</span> */}
                 <input type="text" min="0" max="100" step="any" className="form-control" maxLength="19" />
-                <select className="form-select" aria-label="Default select example" id="units" onChange={(e) => {setUnits(e.target.value)}} defaultValue={units}>
+                <select className="form-select" aria-label="Default select example" id="units" onChange={(e) => { setUnits(e.target.value) }} defaultValue={units}>
                     <option value="sqm">Square meter</option>
                     <option value="sqk">Square kilometer</option>
                     <option value="sqm">Square mile</option>
@@ -168,41 +168,46 @@ function Input() {
                 </span>
                 {/* <span className="input-group-text">$</span> */}
                 <input type="text" min="0" max="100" step="any" className="form-control" maxLength="3" size="4" />
-                <span class ="input-group-text">.00</span>
+                <span class="input-group-text">.00</span>
             </div>
             <span className="input-group-text" id="range"><b>Time: 1 Year</b>
                 <input type="range" className="form-range" id="customRange1" />
             </span>
-            {userPosition ? <div id="map">
-            <MapContainer
-                center={userPosition ? [userPosition.lat, userPosition.lng] : [51.505, -0.09]}
-                zoom={10}
-                style={{ width: '50rem', height: '30rem' }}
-                scrollWheelZoom={true}
-            >
-                <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker
-                    draggable={draggable}
-                    eventHandlers={eventHandlers}
-                    position={userPosition ? [userPosition.lat, userPosition.lng] : [51.505, -0.09]}
-                    ref={markerRef}
+            <div id="map">
+                {userPosition ?
+                    <MapContainer
+                        center={userPosition ? [userPosition.lat, userPosition.lng] : [51.505, -0.09]}
+                        zoom={10}
+                        style={{ width: '50rem', height: '30rem' }}
+                        scrollWheelZoom={true}
                     >
-                    <Popup minWidth={90}>
-                        <span 
-                        onClick={toggleDraggable}
+                        <TileLayer
+                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker
+                            draggable={draggable}
+                            eventHandlers={eventHandlers}
+                            position={userPosition ? [userPosition.lat, userPosition.lng] : [51.505, -0.09]}
+                            ref={markerRef}
                         >
-                            {draggable
-                                ? 'Marker is draggable'
-                                : 'Click here to make marker draggable'}
-                        </span>
-                    </Popup>
-                </Marker>
-            </MapContainer>
-        </div> : ""}
-            
+                            <Popup minWidth={90}>
+                                <span
+                                    onClick={toggleDraggable}
+                                >
+                                    {draggable
+                                        ? 'Marker is draggable'
+                                        : 'Click here to make marker draggable'}
+                                </span>
+                            </Popup>
+                        </Marker>
+                    </MapContainer>
+                    : <div class="d-flex justify-content-center my-5 py-5">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>}
+            </div>
         </>
     )
 }
