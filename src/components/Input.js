@@ -1,42 +1,75 @@
-import React, { useEffect, useState } from 'react';
-import Map from './Map';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import './Input.css';
+import 'leaflet/dist/leaflet.css';
 
 
 function Input() {
+    const [userCurrency, setUserCurrency] = useState('INR');
+    const [units, setUnits] = useState('sqm');
     const [solarData, setSolarData] = useState();
-    const [userLat, setUserLat] = useState()
-    const [userLong, setUserLong] = useState()
+    const [userPosition, setUserPosition] = useState();
 
-    console.log(solarData);
+    console.log(userPosition)
+
+    const [draggable, setDraggable] = useState(false);
+    const markerRef = useRef(null);
+    const eventHandlers = useMemo(
+        () => ({
+            dragend() {
+                const marker = markerRef.current
+                if (marker != null) {
+                    setUserPosition(marker.getLatLng())
+                }
+            },
+        }),
+        [],
+    )
+    const toggleDraggable = useCallback(() => {
+        setDraggable((d) => !d)
+    }, [])
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            console.log(position)
-            setUserLong(position.coords.longitude)
-            setUserLat(position.coords.latitude)
-            const getData = async () => {
-                const solarData = await fetch(`https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=${process.env.REACT_APP_API_KEY}&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
-                const parsedSolarData = await solarData.json()
-                setSolarData(parsedSolarData)
-            }
-            getData()
+        if (!userPosition) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const posi = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                }
+                setUserPosition(posi)
+                const getData = async () => {
+                    const solarData = await fetch(`https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=EcHIlOB7hmPSAsR0kKtIimdO69cGeBxzAdXRtuTl&lat=${userPosition ? userPosition.lat : position.coords.latitude}&lon=${userPosition ? userPosition.lng : position.coords.longitude}`)
+                    const parsedSolarData = await solarData.json()
+                    console.log(parsedSolarData)
+                    setSolarData(parsedSolarData)
+                }
+                getData();
         }, (error) => {
             console.log(error)
         });
+    } else {
+        const getData = async () => {
+            const solarData = await fetch(`https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=EcHIlOB7hmPSAsR0kKtIimdO69cGeBxzAdXRtuTl&lat=${userPosition.lat }&lon=${userPosition.lng}`)
+            const parsedSolarData = await solarData.json()
+            console.log(parsedSolarData)
+            setSolarData(parsedSolarData)
+        }
+        getData();
+    }
 
-    }, [])
+    }, [userPosition])
+
     return (
         <>
-            <div class="input-group mb-3" id="cost">
-                <span class="input-group-text">
+            <div className="input-group mb-3" id="cost">
+                <span className="input-group-text">
                     <b>Electricty Cost:</b>
                 </span>
-                {/* <!-- <span class="input-group-text">$</span> --> */}
-                <input type="text" min="0" max="100" step="any" class="form-control" maxlength="3" size="4" />
-                <span class="input-group-text">.00</span>
-                <select class="form-select" aria-label="Default select example" id="currency">
-                    <option value="USD" selected="selected">United States Dollars</option>
+                {/* <!-- <span className="input-group-text">$</span> --> */}
+                <input type="text" min="0" max="100" step="any" className="form-control" maxLength="3" size="4" />
+                <span className="input-group-text">.00</span>
+                <select className="form-select" aria-label="Default select example" id="currency" onChange={(e) => {setUserCurrency(e.target.value)}} defaultValue={userCurrency}>
+                    <option value="USD">United States Dollars</option>
                     <option value="EUR">Euro</option>
                     <option value="GBP">United Kingdom Pounds</option>
                     <option value="DZD">Algeria Dinars</option>
@@ -107,33 +140,69 @@ function Input() {
                     <option value="VEB">Venezuela Bolivar</option>
                     <option value="ZMK">Zambia Kwacha</option>
                 </select>
-                <span class="input-group-text">per KWh</span>
+                <span className="input-group-text">per KWh</span>
                 <div>
                 </div>
             </div>
-            {userLat ? <Map userLat={userLat} userLong={userLong}/> : ""}
-            <div class="input-group mb-3">
-                <span class="input-group-text">
+            <div className="input-group mb-3">
+                <span className="input-group-text">
                     <b>Area covered by solar panels:</b>
                 </span>
-                {/* <!-- <span class="input-group-text">$</span> --> */}
-                <input type="text" min="0" max="100" step="any" class="form-control" maxlength="19" />
-                <select class="form-select" aria-label="Default select example" id="currency">
-                    <option value="USD" selected="selected">Square meter</option>
-                    <option value="ZMK">Square kilometer</option>
-                    <option value="ZMK">Square mile</option>
-                    <option value="ZMK">Square foot</option>
-                    <option value="ZMK">Square inch</option>
-                    <option value="ZMK">Hecatre</option>
-                    <option value="ZMK">Acre</option>
+                {/* <span className="input-group-text">$</span> */}
+                <input type="text" min="0" max="100" step="any" className="form-control" maxLength="19" />
+                <select className="form-select" aria-label="Default select example" id="units" onChange={(e) => {setUnits(e.target.value)}} defaultValue={units}>
+                    <option value="sqm">Square meter</option>
+                    <option value="sqk">Square kilometer</option>
+                    <option value="sqm">Square mile</option>
+                    <option value="sqf">Square foot</option>
+                    <option value="sqi">Square inch</option>
+                    <option value="sqh">Hecatre</option>
+                    <option value="sqa">Acre</option>
                 </select>
                 <div>
                 </div>
             </div>
-
-            <span class="input-group-text" id="range"><b>Time: 1 Year</b>
-                <input type="range" class="form-range" id="customRange1" />
+            <div className="input-group mb-3">
+                <span className="input-group-text">
+                    <b>Cost of one solar panel:</b>
+                </span>
+                {/* <span className="input-group-text">$</span> */}
+                <input type="text" min="0" max="100" step="any" className="form-control" maxLength="3" size="4" />
+                <span class ="input-group-text">.00</span>
+            </div>
+            <span className="input-group-text" id="range"><b>Time: 1 Year</b>
+                <input type="range" className="form-range" id="customRange1" />
             </span>
+            {userPosition ? <div id="map">
+            <MapContainer
+                center={userPosition ? [userPosition.lat, userPosition.lng] : [51.505, -0.09]}
+                zoom={10}
+                style={{ width: '50rem', height: '30rem' }}
+                scrollWheelZoom={true}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker
+                    draggable={draggable}
+                    eventHandlers={eventHandlers}
+                    position={userPosition ? [userPosition.lat, userPosition.lng] : [51.505, -0.09]}
+                    ref={markerRef}
+                    >
+                    <Popup minWidth={90}>
+                        <span 
+                        onClick={toggleDraggable}
+                        >
+                            {draggable
+                                ? 'Marker is draggable'
+                                : 'Click here to make marker draggable'}
+                        </span>
+                    </Popup>
+                </Marker>
+            </MapContainer>
+        </div> : ""}
+            
         </>
     )
 }

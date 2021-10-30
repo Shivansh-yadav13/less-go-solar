@@ -7,10 +7,96 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+input[type="range"] {
+  height: 30px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 500px;
+  margin: auto;
+}
+input[type="range"]:focus {
+  outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 500px;
+  margin: auto;
+  height: 11px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000;
+  background: #25d8d8;
+  border-radius: 25px;
+  border: 1px solid #010101;
+}
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000031;
+  border: 1px solid #00001e;
+  height: 23px;
+  width: 23px;
+  border-radius: 50px;
+  background: #fff83b;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+}
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: #25d8d8;
+}
+input[type="range"]::-moz-range-track {
+  width: 500px;
+  margin: auto;
+  height: 11px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000;
+  background: #25d8d8;
+  border-radius: 25px;
+  border: 1px solid #010101;
+}
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000031;
+  border: 1px solid #00001e;
+  height: 23px;
+  width: 23px;
+  border-radius: 50px;
+  background: #fff83b;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-fill-lower {
+  background: #25d8d8;
+  border: 1px solid #010101;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type="range"]::-ms-fill-upper {
+  background: #25d8d8;
+  border: 1px solid #010101;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type="range"]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 0px 0px 0px #000031;
+  border: 1px solid #00001e;
+  height: 23px;
+  width: 23px;
+  border-radius: 50px;
+  background: #fff83b;
+  cursor: pointer;
+}
+input[type="range"]:focus::-ms-fill-lower {
+  background: #25d8d8;
+}
+input[type="range"]:focus::-ms-fill-upper {
+  background: #25d8d8;
+}
+
+body {
+  background-color: rgb(43, 43, 43);
+}
 
 .input-group {
   margin: auto;
-  margin-left: 100px;
+  margin-left: 50px;
   width: 700px;
   /* overflow: hidden; */
   font-size: 18px;
@@ -30,7 +116,7 @@ input[type="number"] {
 #range {
   width: 700px;
   margin: auto;
-  margin-left: 100px;
+  margin-left: 50px;
 }
 
 .form-range {
@@ -43,9 +129,20 @@ input[type="number"] {
 }
 
 #map {
-  width: 200px;
-  height: auto;
+  height: 400px;
+  width: 700px;
+  margin: 50px;
+  margin-top: 20px;
 }
 #cost {
-  margin-top: 100px;
+  margin-top: 50px;
+}
+
+.output {
+  float: right;
+  border: 1px solid white;
+  width: 430px;
+  height: 640px;
+  margin-top: -220px;
+  margin-right: 50px;
 }
