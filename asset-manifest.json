@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/less-go-solar/static/css/main.be55a50b.chunk.css",
+    "main.js": "/less-go-solar/static/js/main.55b7c1a3.chunk.js",
+    "main.js.map": "/less-go-solar/static/js/main.55b7c1a3.chunk.js.map",
+    "runtime-main.js": "/less-go-solar/static/js/runtime-main.7f69c0f6.js",
+    "runtime-main.js.map": "/less-go-solar/static/js/runtime-main.7f69c0f6.js.map",
+    "static/css/2.cb432d8b.chunk.css": "/less-go-solar/static/css/2.cb432d8b.chunk.css",
+    "static/js/2.586254c8.chunk.js": "/less-go-solar/static/js/2.586254c8.chunk.js",
+    "static/js/2.586254c8.chunk.js.map": "/less-go-solar/static/js/2.586254c8.chunk.js.map",
+    "static/js/3.2794bc35.chunk.js": "/less-go-solar/static/js/3.2794bc35.chunk.js",
+    "static/js/3.2794bc35.chunk.js.map": "/less-go-solar/static/js/3.2794bc35.chunk.js.map",
+    "index.html": "/less-go-solar/index.html",
+    "static/css/2.cb432d8b.chunk.css.map": "/less-go-solar/static/css/2.cb432d8b.chunk.css.map",
+    "static/css/main.be55a50b.chunk.css.map": "/less-go-solar/static/css/main.be55a50b.chunk.css.map",
+    "static/js/2.586254c8.chunk.js.LICENSE.txt": "/less-go-solar/static/js/2.586254c8.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7f69c0f6.js",
+    "static/css/2.cb432d8b.chunk.css",
+    "static/js/2.586254c8.chunk.js",
+    "static/css/main.be55a50b.chunk.css",
+    "static/js/main.55b7c1a3.chunk.js"
+  ]
+}
