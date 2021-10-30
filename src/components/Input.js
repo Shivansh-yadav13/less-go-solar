@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import './Input.css';
-import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css'
 
 
 function Input() {
