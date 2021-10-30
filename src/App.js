@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css'
 import './App.css';
 
 function App() {
@@ -37,8 +38,13 @@ function App() {
         <TextField id="standard-basic" label="Avg. Cost/Panel" variant="standard" type="number" />
         <TextField id="standard-basic" label="Avg. Cost/KWH of electricity in your area" type="number" variant="standard" />
       </header>
-      <div className="map-div" style={{width: '200px', height: '100px'}}>
-        <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+      <div className="map-div">
+        <MapContainer
+        center={[userLocation.latitude, userLocation.longitude]}
+        zoom={10}
+        style={{ width: '50rem', height: '30rem' }}
+        scrollWheelZoom={false}
+        >
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
