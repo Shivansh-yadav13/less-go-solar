@@ -1,0 +1,51 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-group {
+  margin: auto;
+  margin-left: 100px;
+  width: 700px;
+  /* overflow: hidden; */
+  font-size: 18px;
+}
+
+.input-group-text {
+  font-size: 18px;
+  border-radius: 0px;
+}
+.form-select {
+  width: 90px;
+  height: 43px;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+#range {
+  width: 700px;
+  margin: auto;
+  margin-left: 100px;
+}
+
+.form-range {
+  width: 500px;
+  margin: auto;
+}
+
+#currency {
+  width: 2px;
+}
+
+#map {
+  width: 200px;
+  height: auto;
+}
+#cost {
+  margin-top: 100px;
+}
